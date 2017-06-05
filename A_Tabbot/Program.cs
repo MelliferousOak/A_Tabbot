@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace A_Tabbot
-{
-    class Program
-    {
+namespace A_Tabbot {
+
+    class Program {
         static int notesNumber, handPosition, topFret;
         static int lowestString, highestString;
         static int lowestPosition, highestPosition;
-        static int fewestNotes, mostNotes;
+        static int beatsNumber, fewestNotes, mostNotes;
         static int maxSlide;
         static float stretchFactor;
         static Random rnd = new Random();
 
-        static void Main(string[] args)
-        {
+        static void Main(string[] args) {
             //Initialise params
             Parameters();
 
@@ -44,20 +42,23 @@ namespace A_Tabbot
             }
         }
 
-        static void Parameters()
-        {
+        static void Parameters() {
             lowestString = 1;
             highestString = 6;      //How many guitar strings?
             lowestPosition = 1;
             highestPosition = 6;    //How far up fretboard to allow left hand (first finger on this fret)?
+            beatsNumber = 8;
             fewestNotes = 3;
             mostNotes = 8;          //How many notes in the riff?
+            if (mostNotes > beatsNumber) {
+                mostNotes = beatsNumber;
+                Console.WriteLine ("Cannot have more notes than beats, setting mostNotes to " + mostNotes + " - check beatsNumber!");
+            }
             maxSlide = 3;           //Maximum number of frets slid across in a slide.
             stretchFactor = 1.15f;  //How much moving up the fretboard increases number of frets in reach.
         }
 
-        static Note[] AssignBeats(Note[] notes)
-        {
+        static Note[] AssignBeats(Note[] notes) {
             for (int i = 0; i < notesNumber; i++) {
                 int beatFactor = rnd.Next(0, 15);
                 if (beatFactor < 4) { notes[i].beat = 1; }
@@ -73,6 +74,10 @@ namespace A_Tabbot
             Array.Sort<Note>(notes, (x,y) => x.beat.CompareTo(y.beat));
 
             return notes;
+        }
+
+        static void ChooseBeats() {
+
         }
 
 
